@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shorten-Link2</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Shorten-Link</h2>
+    <div class="">
+        <form action="/url" method="post">
+            <div class="">
+                <label for="">Link</label>
+                <input type="text" placeholder="https://example.com" name="url" required>
+                <button type="submit">Generate</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="">
+        <% if(urls && urls.length>0){ %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>S. No</th>
+                        <th>Generated URL</th>
+                        <th>Redirects to</th>
+                        <th>No.of Visits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% urls.forEach((url, index)=> { %>
+                        <tr>
+                            <td>
+                                <%= index+1 %>
+                            </td>
+                            <td>http://localhost:5000/url/<%= url.shortID %>
+                            </td>
+                            <td>
+                                <%= url.redirectedURL %>
+                            </td>
+                            <td>
+                                <%= url.history.length %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+            <% }else{ %>
+                <h5>No data found</h5>
+            <% } %>
+    </div>
+</body>
+
+</html>
