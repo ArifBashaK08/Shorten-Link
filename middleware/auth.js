@@ -1,15 +1,47 @@
 import { getUser } from "../services/auth.js"
 
-export const authunticateUser = async (req, res, next) => {
-    const userID = req.cookies?.uID
+export const authenticateUser = (req, res, next) => {
+    try {
+        const authCookie = req.cookies?.uID
 
-    if (!userID) return res.status(401).redirect("/signin")
+        req.user = null
 
-    const user = getUser(userID)
+        if (!authCookie) return next()
 
-    if (!user) return res.status(401).redirect("/signin")
+        const user = getUser(authCookie)
 
-    req.user = user
+        if (!user) return res.status(401).send(`<h1>You are not Authorised</h1>
+    <script>
+    setTimeout(() => {
+            window.location.href = "/signin"
+        }, 1000)
+    </script>`)
 
-    next()
+        req.user = user
+
+        return next()
+    } catch (error) {
+        console.error(`Error : ${error.message}\n${error}`)
+        return res.status(500).send(`<h1>Internal Server Error</h1>`)
+    }
+}
+
+export const authorizeUser = (roles = []) => {
+    return function (req, res, next) {
+        try {
+            if (!req.user) return res.status(401).send(`<h1>You are not Authorised</h1>
+            <script>
+            setTimeout(() => {
+                window.location.href = "/signin"
+            }, 1000)
+            </script>`)
+
+            if (!roles.includes(req.user.role)) return res.status(403).end(`<h1>Access Forbidden</h1>`)
+
+            next()
+        } catch (error) {
+            console.error(`Error : ${error.message}\n${error}`)
+            return res.status(500).send(`<h1>Internal Server Error</h1>`)
+        }
+    }
 }

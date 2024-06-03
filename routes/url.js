@@ -1,5 +1,5 @@
 import express from "express"
-import { generateShortURL, redirectToURL, getURLAnalytics, getAllURLs } from "../controllers/url.js"
+import { generateShortURL, redirectToURL, getURLAnalytics } from "../controllers/url.js"
 
 const urlRouter = express.Router()
 

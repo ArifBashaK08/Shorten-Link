@@ -1,21 +1,19 @@
-// const sessionIDForUser = new Map() //For state-full Authentication
-
-//For state-less Authentication
 import jwt from "jsonwebtoken"
 
 const key = "ArifB@$h@#08"
 
-export const setUser = (/*id,*/user) => {
-    // sessionIDForUser.set(id, user)//For state-full Authentication
+export const setUser = (user) => {
+
     return jwt.sign({
         _id: user.id,
-        email: user.email
+        email: user.email,
+        role: user.role,
     }, key)
-} 
+}
 
 export const getUser = (token) => {
-    // return sessionIDForUser.get(id)//For state-full Authentication
-    if(!token) return null
+
+    if (!token) return null
     try {
         return jwt.verify(token, key);
     } catch (error) {

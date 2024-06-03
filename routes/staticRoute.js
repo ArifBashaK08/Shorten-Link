@@ -1,9 +1,10 @@
 import express from "express"
 import { getAllURLs } from "../controllers/url.js"
+import { authorizeUser } from "../middleware/auth.js"
 
 const staticRoute = express.Router()
 
-staticRoute.get("/", getAllURLs)
+staticRoute.get("/", authorizeUser(["user"]), getAllURLs)
 
 staticRoute.get("/signup", (req, res) => {
     return res.status(200).render("signUp")

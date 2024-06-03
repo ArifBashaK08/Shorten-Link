@@ -1,5 +1,4 @@
 import { userModel } from "../models/userModel.js"
-import { v4 as uuidV4 } from "uuid"
 import { setUser } from "../services/auth.js"
 
 export const signupHandler = async (req, res) => {
@@ -40,18 +39,12 @@ export const logInHandler = async (req, res) => {
         }, 1000)
         </script>`)
 
-        //For state-full Authentication
-        // const sessionID = uuidV4()
-        // setUser(sessionID, user)
-
         const token = setUser(user)
-
-        // res.cookie("uID", sessionID)//For state-full Authentication
 
         res.cookie("uID", token)
         return res.status(200).redirect("/")
     } catch (error) {
-        console.error("Error : ", error.message)
+        console.error("Error : ", error.message,"\n",error)
         res.status(500).send(`<h1>Inertnal server Error - 500 - Check logs</h1>`)
     }
 }

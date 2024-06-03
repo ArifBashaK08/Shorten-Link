@@ -38,7 +38,6 @@ export const generateShortURL = async (req, res) => {
             createdBy: req.user._id,
         })
         return res.status(200).redirect("/")
-        // return res.status(200).render("index", {id : shortID})
     } catch (error) {
         console.log("Error: ", error.message)
         res.status(500).send(`<h1>Something went wrong..!</h1>`)
@@ -52,7 +51,7 @@ export const redirectToURL = async (req, res) => {
             $push: {
                 history: [{ timeStamp: timeStamp() }],
             }
-        })
+        }, { new: true })
         res.status(200).redirect(link.redirectedURL)
     } catch (error) {
         console.log("Error: ", error.message)
