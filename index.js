@@ -33,11 +33,12 @@ app.use("/api/users", routerAPI)
 //====== Authentication ======//
 app.use("/user", userRouter)
 app.use(authenticateUser)
+app.get("/admin/urls", staticRoute)
 app.get("/signup", staticRoute)
 app.get("/signin", staticRoute)
 
 //====== Shorten-Link ======//
-app.use("/url", authorizeUser(["user"]), urlRouter)
+app.use("/url", authorizeUser(["user", "admin"]), urlRouter)
 app.get("/", staticRoute)
 
 

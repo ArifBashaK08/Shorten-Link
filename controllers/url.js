@@ -13,10 +13,25 @@ export const getAllURLs = async (req, res) => {
     try {
         if(!req.user) return res.status(409).redirect("/signin")
 
-    const allURLs = await URL.find({createdBy: req.user._id})
+    const allURLs = await URL.find({ })
         if (!allURLs) return res.status(404).send(`<h2>Data not found</h2>`)
 
         return res.status(200).render("index", {urls : allURLs})
+
+    } catch (error) {
+        console.log("Error: ", error.message)
+        res.status(500).send(`<h1>Something went wrong..!</h1>`)
+    }
+}
+
+export const getURLs = async (req, res) => {
+    try {
+        if(!req.user) return res.status(409).redirect("/signin")
+
+    const URLs = await URL.find({createdBy: req.user._id})
+        if (!URLs) return res.status(404).send(`<h2>Data not found</h2>`)
+
+        return res.status(200).render("index", {urls : URLs})
 
     } catch (error) {
         console.log("Error: ", error.message)
